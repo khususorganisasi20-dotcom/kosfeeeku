@@ -1,0 +1,794 @@
+# KOSFEEKU — COMPLETE MASTER BUILD PROMPT
+## Full-Stack Boarding House, Café & Co-working Platform
+
+Build a complete, production-oriented web application called **KosfeeKu** from scratch in my existing Lovable project.
+
+**Important:** Supabase is already connected. Inspect the existing project and Supabase connection before making changes. Preserve working configuration and avoid creating duplicate resources.
+
+Do not build only a static landing page, frontend prototype, or collection of disconnected dashboards. Build a cohesive full-stack application with real database persistence, authentication, authorization, validated workflows, and functional user interactions.
+
+Implement the entire application described below. You may organize the implementation internally into manageable steps, but do not stop after creating the homepage or a basic prototype. Continue until all feasible modules are implemented and tested. Clearly identify any functionality that requires external credentials, merchant approval, or third-party configuration.
+
+---
+
+# 1. BUSINESS IDENTITY
+
+**Brand:** KosfeeKu
+
+**Indonesian tagline:** "Kost Nyaman, Ngopi Gampang."
+
+**English tagline:** "Comfortable Living, Coffee Made Easy."
+
+KosfeeKu integrates three services into one convenient platform:
+
+1. A comfortable boarding house (kost).
+2. An affordable café serving meals, snacks, coffee, and other drinks.
+3. A co-working space for studying, working, and collaborating.
+
+Target users include students, young professionals, boarding house residents, café customers, and remote workers.
+
+The website must be modern, welcoming, affordable, practical, and easy to use.
+
+# 2. DESIGN SYSTEM AND BRANDING
+
+Use a consistent pastel visual identity throughout the application.
+
+Color palette:
+- Pastel pink: #F8D7E8
+- Lavender: #E6DDF7
+- Pastel blue: #D9ECFA
+- Pastel yellow: #FFF0B8
+- Pastel green: #DCEFD9
+- Cream background: #FFFCF8
+- Dark text: #393744
+
+Design requirements:
+- Modern, cozy, clean, friendly, and professional.
+- Rounded cards, subtle shadows, attractive typography, generous spacing, and consistent icons.
+- High readability and sufficient contrast.
+- Responsive layouts for mobile, tablet, and desktop.
+- Accessible forms, buttons, navigation, and keyboard focus states.
+- Consistent components across public pages and dashboards.
+- Appropriate empty states, loading states, confirmation dialogs, validation messages, and error states.
+- Do not overcrowd the interface or use excessive decorative elements.
+- Use suitable images for rooms, food, beverages, and co-working spaces.
+
+Create a reusable design system instead of styling each page independently.
+
+# 3. COMPLETE ROUTING AND PUBLIC PAGES
+
+Implement all necessary routes, including:
+
+- `/` — Homepage
+- `/rooms` — Room listings
+- `/rooms/:id` — Room details
+- `/cafe` — Café menu
+- `/cafe/cart` — Shopping cart
+- `/coworking` — Co-working services
+- `/about` — About KosfeeKu
+- `/facilities` — Facilities
+- `/contact` — Contact
+- `/faq` — Frequently asked questions
+- `/policies` — Policies
+- `/login` — Login role selection
+- `/login/owner` — Owner/staff login
+- `/login/tenant` — Tenant login
+- `/register` — Tenant registration
+- `/forgot-password` — Password recovery
+- `/reset-password` — Password reset
+- `/dashboard/owner` — Owner dashboard
+- `/dashboard/tenant` — Tenant dashboard
+- Additional nested dashboard routes for each module.
+- Appropriate booking, reservation, order, invoice, and payment detail routes.
+- A custom 404 page for invalid routes.
+
+Ensure direct navigation, browser refreshes, and internal links work correctly. Protect private routes and redirect unauthorized users appropriately.
+
+Never leave visible links or buttons without a defined action. Do not use fake links such as `href="#"`.
+
+# 4. HOMEPAGE
+
+Create a complete homepage with:
+
+## Header
+- KosfeeKu logo.
+- Navigation links.
+- Indonesian/English language switcher.
+- Login and account entry point.
+- Clear calls to action.
+
+## Hero
+Indonesian headline: "Satu Tempat, Banyak Cerita."
+
+Indonesian description: "Temukan kost nyaman, nikmati makanan dan kopi favoritmu, serta produktif di co-working space dalam satu tempat."
+
+English headline: "One Place, Many Stories."
+
+English description: "Find a comfortable room, enjoy your favorite food and coffee, and stay productive in one convenient place."
+
+Primary CTA: "Cari Kamar" / "Find a Room".
+
+Secondary CTA: "Jelajahi Café" / "Explore the Café".
+
+## Additional sections
+- Three service cards for Kost, Café, and Co-working.
+- Featured rooms with real database-backed pricing and availability.
+- Café food and drink highlights.
+- Co-working overview.
+- Facilities and amenities.
+- How the service works.
+- Genuine customer testimonials only; otherwise use clearly labeled sample content or omit them.
+- FAQ preview.
+- Contact CTA.
+- Complete footer with working links.
+
+Do not display invented occupancy figures, revenue statistics, live availability, customer reviews, or business contact information as genuine facts.
+
+# 5. BILINGUAL INDONESIAN AND ENGLISH
+
+Implement complete bilingual support across the entire application.
+
+Translate:
+- Public pages.
+- Navigation.
+- Buttons and forms.
+- Room details.
+- Menus and categories.
+- Authentication screens.
+- Owner and tenant dashboards.
+- Booking statuses.
+- Order statuses.
+- Invoice and payment statuses.
+- Validation and error messages.
+- Notifications.
+- Emails and system-generated messages where supported.
+- FAQ, policies, and footer.
+
+The language switcher must change actual content and persist the selected language across navigation and refreshes.
+
+Use a centralized translation structure. Avoid hardcoding different translations inconsistently throughout the application.
+
+Business names and prices should remain consistent across languages.
+
+# 6. AUTHENTICATION AND ROLE-BASED ACCESS
+
+Use Supabase Authentication.
+
+Implement:
+- Tenant registration.
+- Tenant login.
+- Owner/staff login.
+- Logout.
+- Forgot-password and password-reset workflows.
+- Session persistence.
+- Protected routes.
+- Appropriate authentication error messages.
+- Account status handling.
+- Secure password handling through Supabase Auth.
+
+Use a role model that distinguishes at least:
+- Owner.
+- Authorized staff, with configurable permissions.
+- Tenant.
+
+Security requirements:
+- Public registration must never allow users to assign themselves the Owner or privileged staff role.
+- Owner accounts must be provisioned through a trusted administrative process.
+- Role changes must be authorized and enforced on the server/database side.
+- Frontend role checks alone are insufficient.
+- Tenants may access only their own private records.
+- Staff must access only the records and actions permitted by their assigned permissions.
+- Owners may manage authorized business operations.
+- Prevent unauthorized access through direct URL entry or manipulated API requests.
+
+Use Supabase Row Level Security (RLS) on every table containing private or business-sensitive information. Use secure database functions or server-side operations for privileged changes.
+
+Never expose service-role keys, payment secrets, or privileged credentials in browser code.
+
+# 7. SUPABASE DATABASE AND DATA MODEL
+
+Inspect the existing Supabase schema first. Reuse suitable resources and create only the missing tables, relationships, indexes, and policies.
+
+Create a normalized, maintainable schema appropriate for the following modules. Table names may follow consistent snake_case conventions.
+
+## User and access tables
+- `profiles`
+- `user_roles` or an equivalent secure role structure
+- `staff_permissions`, if needed
+
+## Kost tables
+- `rooms`
+- `room_categories`
+- `room_facilities`
+- `room_bookings`
+- `tenants`
+- `rental_contracts`
+- `rent_invoices`
+- `maintenance_requests`
+
+## Café tables
+- `menu_categories`
+- `menu_items`
+- `orders`
+- `order_items`
+- `inventory_items`
+- `inventory_movements`
+
+## Co-working tables
+- `coworking_resources`
+- `coworking_reservations`
+- `coworking_packages`, if packages are enabled
+
+## Payments and promotions
+- `payments`
+- `payment_events`
+- `coupons`
+- `coupon_redemptions`
+- `loyalty_accounts`
+- `loyalty_transactions`
+
+## Communications and administration
+- `notifications`
+- `announcements`
+- `contact_inquiries`
+- `audit_logs`
+- `business_settings`
+
+Use appropriate foreign keys, constraints, indexes, timestamps, monetary types, and status enums or validated status fields.
+
+Use migrations or another safe, traceable schema-change process. Do not reset or delete existing project data without explicit approval.
+
+Apply RLS and least-privilege access policies. Never trust user-supplied prices, payment amounts, ownership identifiers, roles, or discount calculations without server-side validation.
+
+# 8. ROOM CATALOG AND RENTAL MANAGEMENT
+
+The minimum monthly rental price must be **Rp1,000,000**.
+
+Create configurable room categories with different areas, prices, facilities, furnishings, bathroom types, and occupancy limits.
+
+Use these as editable demonstration examples only:
+- Standard: 9 m², Rp1,000,000/month.
+- Superior: 10.5 m², Rp1,400,000/month.
+- Deluxe: 16 m², Rp1,800,000/month.
+
+Do not claim these are actual rooms or real availability until the owner configures verified inventory.
+
+Each room should support:
+- Unique room number or identifier.
+- Category.
+- Room area in square meters.
+- Monthly rental price.
+- Facilities and furnishings.
+- Private or shared bathroom.
+- Occupancy capacity.
+- Images.
+- Availability status.
+- Room description.
+- Relevant rental terms.
+
+Owner functionality:
+- Create, edit, archive, and manage rooms.
+- Update prices and facilities.
+- View occupancy and availability.
+- Manage bookings and rental contracts.
+- Track check-in and check-out.
+- Review tenant information.
+- Record deposits and rental invoices where applicable.
+
+Tenant functionality:
+- Browse and search rooms.
+- Filter by price, area, category, facilities, bathroom type, and availability.
+- Compare room details.
+- Submit a booking request.
+- View booking status and rental details.
+
+Booking must use database-backed availability checks and prevent overlapping confirmed reservations. Handle concurrent booking attempts safely.
+
+# 9. TENANT ONBOARDING AND RENTAL WORKFLOW
+
+Implement this complete workflow:
+
+1. Visitor explores available rooms.
+2. Visitor creates a tenant account or signs in.
+3. Visitor submits a room booking request.
+4. System checks the room and requested dates.
+5. Owner reviews and approves or rejects the request.
+6. Approved booking creates the appropriate rental agreement or contract record.
+7. The system creates the applicable rent invoice.
+8. Tenant sees the booking, contract summary, and invoice in their dashboard.
+9. Tenant makes a supported payment.
+10. Payment is verified before the invoice is marked paid.
+11. Owner and tenant can see the updated status.
+12. Check-in, renewal, and check-out are tracked according to the rental workflow.
+
+Support configurable booking deposits, rental periods, due dates, and late-payment rules. Do not invent legal terms or automatically apply penalties without configured policy.
+
+Prevent double-booking, duplicate invoices, and duplicate payment processing.
+
+# 10. CAFÉ MENU AND ORDERING
+
+Build a complete, searchable café menu with configurable prices and availability.
+
+All listed items are proposed menu options. They are not claims that the actual café already stocks them. The owner must be able to enable, disable, edit, and price every item.
+
+## Food menu
+
+### Noodles and quick meals
+- Indomie Goreng.
+- Indomie Kuah.
+- Indomie Telur.
+- Indomie Telur Sosis.
+- Mie Ayam.
+- Mie Ayam Bakso.
+
+### Rice meals
+- Nasi Ayam Geprek.
+- Nasi Ayam Penyet.
+- Nasi Goreng.
+- Nasi Telur.
+- Nasi Ayam Teriyaki.
+- Nasi Chicken Katsu.
+- Nasi Lele.
+- Soto dengan Nasi.
+- Bakso.
+
+### Snacks
+- Seblak.
+- Kentang Goreng.
+- Roti Bakar.
+- Pisang Goreng.
+- Cireng.
+- Risol.
+- Tahu Crispy.
+- Tempe Mendoan.
+- Aneka Gorengan.
+
+### Desserts
+- Donat.
+- Brownies.
+- Puding.
+- Roti Cokelat.
+- Es Krim, if available.
+
+## Drinks menu
+
+### Coffee
+- Kopi Hitam.
+- Americano.
+- Espresso, if available.
+- Cappuccino.
+- Café Latte.
+- Es Kopi Susu.
+- Caramel Latte.
+
+### Tea
+- Es Teh.
+- Teh Hangat.
+- Lemon Tea.
+- Lychee Tea.
+- Milk Tea.
+- Teh Tarik.
+
+### Non-coffee
+- Matcha Latte.
+- Cokelat Panas.
+- Es Cokelat.
+- Taro Milk.
+- Red Velvet.
+- Strawberry Milk.
+- Es Jeruk.
+- Jeruk Hangat.
+- Susu Jahe.
+- Air Mineral.
+
+## Editable demonstration prices
+
+Use the following as sample prices only:
+- Indomie variations: approximately Rp8,000–Rp15,000.
+- Ayam Geprek: approximately Rp15,000–Rp22,000.
+- Mie Ayam: approximately Rp12,000–Rp18,000.
+- Bakso: approximately Rp12,000–Rp20,000.
+- Es Teh: approximately Rp4,000–Rp7,000.
+- Es Kopi Susu: approximately Rp10,000–Rp18,000.
+
+Clearly mark these as editable sample prices until the owner confirms the actual menu and prices.
+
+## Customer ordering
+- Browse by food and drink category.
+- Search and filter menu items.
+- View descriptions, images, prices, and availability.
+- Add and remove items from the cart.
+- Adjust quantities.
+- Validate stock and availability.
+- Calculate subtotals, configured fees, and discounts on the server.
+- Submit an order.
+- Choose a supported payment method.
+- View order confirmation and status.
+- Review order history.
+
+## Order status
+Use appropriate statuses such as:
+- Pending.
+- Confirmed.
+- Preparing.
+- Ready.
+- Completed.
+- Cancelled.
+
+Apply valid status transitions and authorized staff controls.
+
+## Owner café management
+- Add, edit, and archive menu items.
+- Manage categories, prices, images, and availability.
+- Update stock.
+- Track inventory movements.
+- View orders and order history.
+- Update order statuses.
+- Review sales and item performance.
+
+Prevent invalid quantities, negative totals, overselling, and duplicate submissions.
+
+# 11. COWORKING SPACE
+
+Create a complete co-working module.
+
+Configurable resources may include:
+- Individual desks.
+- Shared tables.
+- Quiet study areas.
+- Meeting rooms, if offered.
+
+The owner must be able to configure actual available resources, capacities, prices, operating hours, amenities, and reservation rules.
+
+Features:
+- Browse available workspace resources.
+- View facilities, capacity, prices, and terms.
+- Select date, start time, and duration.
+- Check availability before submitting.
+- Reserve a workspace.
+- Prevent overlapping confirmed reservations.
+- View booking status and reservation history.
+- Cancel according to configured rules.
+- Process applicable payments.
+- Allow the owner to manage resources, schedules, reservations, and pricing.
+
+Support configurable hourly, session-based, and package pricing when enabled. Do not display unconfigured packages as real offers.
+
+# 12. CASH AND QRIS PAYMENTS
+
+Implement a unified payment architecture for room invoices, café orders, and co-working reservations.
+
+Support:
+- Cash.
+- QRIS through a compatible payment provider or merchant integration.
+
+## Cash workflow
+- Record the payment attempt or cash payment request.
+- Keep it pending until authorized staff confirms actual receipt.
+- Record amount, transaction reference, confirmation time, and confirming staff member.
+- Only mark the associated invoice or order paid after authorized confirmation.
+- Prevent duplicate confirmation and inconsistent invoice totals.
+
+## QRIS workflow
+Inspect which payment-provider integration is available and suitable for the project. Do not invent an existing merchant integration.
+
+If a compatible dynamic QRIS provider is configured:
+- Create a payment request through a secure server-side integration.
+- Generate or retrieve the correct payment instructions or QR code.
+- Use the provider's verified server-side status notifications or API verification.
+- Verify amount, currency, merchant reference, transaction identity, and final payment status.
+- Handle expired, failed, pending, successful, and refunded transactions where supported.
+- Process provider callbacks idempotently.
+- Verify callback authenticity according to the provider's documented mechanism.
+
+If no provider is configured:
+- Implement a clearly identified QRIS integration setup state.
+- Provide a manual verification workflow only if the owner supplies the legitimate merchant QRIS material and confirms payment through a trusted process.
+- Keep manually submitted payment evidence pending until authorized staff verifies the transaction.
+- Do not claim automatic payment verification.
+- Do not generate fake merchant QR codes or expose payment secrets in the frontend.
+
+Never mark a transaction paid merely because a customer clicks a button or uploads a screenshot.
+
+Use secure server-side functions for privileged payment operations. Keep provider credentials in protected environment secrets. Do not treat an unverified browser redirect as proof of payment.
+
+Ensure one verified payment cannot be applied multiple times. Support refunds and cancellations only through properly authorized, recorded workflows. Update the invoice, order, and payment records consistently.
+
+The owner must be able to configure and test payment integration status without exposing credentials.
+
+# 13. TENANT DASHBOARD
+
+Create a dedicated tenant dashboard with:
+- Overview.
+- Profile and account settings.
+- Current room and rental details.
+- Booking history.
+- Rental contract summary.
+- Rent invoices and due dates.
+- Payment history and statuses.
+- Café order history.
+- Co-working reservations.
+- Loyalty points and eligible rewards.
+- Active coupons and promotions.
+- Complaints and maintenance requests.
+- Notifications and announcements.
+- Support and contact options.
+
+Tenant information must be private. A tenant must never be able to modify another tenant's profile, invoices, bookings, payments, or orders.
+
+Show accurate data from Supabase, with helpful empty states for new accounts.
+
+# 14. OWNER AND STAFF DASHBOARD
+
+Create a separate administrative interface with navigation suited to business operations.
+
+## Overview
+Display verified, database-backed metrics:
+- Total rooms.
+- Available rooms.
+- Occupied rooms.
+- Pending bookings.
+- Active tenants.
+- Outstanding rent invoices.
+- Verified revenue.
+- Pending payments.
+- Café order counts and sales.
+- Co-working reservations.
+- Maintenance requests.
+
+Define metric periods and status filters consistently. Exclude unverified payments from verified revenue. Never populate live business metrics with fabricated values.
+
+## Management modules
+- Room and category management.
+- Tenant and rental management.
+- Booking management.
+- Contracts and rent invoices.
+- Payment verification and reconciliation.
+- Café menu management.
+- Café orders and inventory.
+- Co-working resources and reservations.
+- Coupons, loyalty, and promotions.
+- Complaints and maintenance.
+- Announcements and notifications.
+- Contact inquiries.
+- Business settings.
+- Staff management and permissions.
+- Reports and analytics.
+- Audit logs.
+
+Use confirmation dialogs for destructive or sensitive operations. Archive records rather than permanently deleting financial history when appropriate.
+
+## Staff permissions
+Allow the owner to assign limited operational roles, such as café staff or booking staff, when supported by the permission model.
+
+Enforce permissions on the server/database side and record sensitive administrative actions.
+
+# 15. LOYALTY POINTS, COUPONS, AND PROMOTIONS
+
+Implement configurable loyalty and promotion features.
+
+Loyalty:
+- Earn points according to owner-configured rules.
+- Track points in an auditable transaction ledger.
+- Display available and redeemed points.
+- Support eligible rewards or redemption options.
+- Prevent duplicate point issuance for the same qualifying transaction.
+- Reverse or adjust points when qualifying transactions are legitimately cancelled or refunded.
+
+Coupons:
+- Configurable discount type and value.
+- Start and expiration dates.
+- Usage limits.
+- Minimum purchase requirements.
+- Eligible services or products.
+- User or customer eligibility rules.
+- Validation before checkout.
+
+Calculate all discounts and loyalty transactions on the server. Do not trust client-supplied discount amounts.
+
+# 16. COMPLAINTS, MAINTENANCE, AND NOTIFICATIONS
+
+Tenants can:
+- Submit a complaint or maintenance request.
+- Choose a category and affected room or facility.
+- Provide a description and optional permitted attachments.
+- Track status and updates.
+- Receive relevant notifications.
+
+Owner or authorized staff can:
+- Review and assign requests.
+- Update status and notes.
+- Track resolution.
+- Record completion and relevant maintenance costs when applicable.
+
+Create notification records for relevant events, including:
+- Booking updates.
+- Invoice creation and due dates.
+- Payment confirmation.
+- Café order updates.
+- Co-working reservation updates.
+- Complaint status changes.
+- Announcements.
+
+Provide in-app notifications. Email or push notifications may be added where the required provider is configured. Never claim an email or external notification was sent unless delivery was actually performed or verified.
+
+# 17. REPORTS AND FINANCIAL RECORDS
+
+Build reports for:
+- Room occupancy and rental performance.
+- Tenant and booking activity.
+- Rent invoices and outstanding balances.
+- Verified payments.
+- Café sales and best-selling items.
+- Inventory movements.
+- Co-working reservations.
+- Coupons and loyalty usage.
+- Maintenance activity.
+
+Allow filtering by date range and relevant statuses. Provide export functionality where feasible.
+
+Clearly distinguish:
+- Revenue.
+- Pending payments.
+- Outstanding invoices.
+- Refunds.
+- Discounts.
+- Operational expenses, if entered.
+- Net profit, only if the required expense and accounting data exists.
+
+Do not label revenue as profit. Do not count pending or failed payments as completed income.
+
+Use consistent currency formatting in Indonesian rupiah and prevent floating-point rounding errors in financial calculations.
+
+# 18. CONTACT, FAQ, POLICIES, AND SETTINGS
+
+Provide editable business settings for:
+- Business name and description.
+- Contact information.
+- Operating hours.
+- Actual address, when configured.
+- Social links.
+- Rental terms.
+- Cancellation rules.
+- Payment instructions.
+- Café operating information.
+- Co-working operating rules.
+
+Implement a functional contact inquiry submission workflow with validation and secure storage.
+
+Provide editable FAQ and policy content in Indonesian and English. Do not invent legally binding terms, unverified certifications, or business details.
+
+# 19. SECURITY AND DATA INTEGRITY
+
+Security is a core requirement, not an optional improvement.
+
+Implement:
+- Supabase Authentication.
+- Server-enforced authorization.
+- Row Level Security on relevant tables.
+- Least-privilege database policies.
+- Input validation.
+- Secure file-upload rules.
+- Rate limiting or abuse prevention where appropriate.
+- Safe error handling without exposing secrets.
+- Audit logging for sensitive administrative actions.
+- Database constraints for critical invariants.
+- Safe handling of concurrent bookings and payments.
+- Idempotent processing for duplicate requests and payment events.
+- Server-side validation of prices, totals, discounts, roles, and transaction status.
+- Appropriate protection against unauthorized record access and privilege escalation.
+
+Do not trust frontend calculations or user-submitted ownership IDs. Do not expose private tenant information publicly.
+
+Do not weaken RLS to make the application appear functional. Test the intended access patterns with different user roles.
+
+# 20. FILES, IMAGES, AND STORAGE
+
+Use suitable images for rooms, food, beverages, and co-working areas.
+
+If Supabase Storage is used:
+- Organize uploads appropriately.
+- Apply access policies.
+- Validate file types and sizes.
+- Restrict private documents to authorized users.
+- Avoid exposing private tenant documents through public URLs.
+
+Use replaceable demo imagery where actual business photography is unavailable. Do not imply demonstration images show verified real facilities or menu items.
+
+# 21. TECHNICAL IMPLEMENTATION
+
+Inspect the existing Lovable project, its framework, installed dependencies, routing, and Supabase configuration before implementation.
+
+Use the existing project architecture where reasonable. Avoid unnecessary rewrites and duplicate libraries.
+
+Implement:
+- Reusable UI components.
+- Maintainable data-access logic.
+- Typed data structures where supported by the existing stack.
+- Database migrations or a traceable schema update process.
+- Appropriate foreign keys and indexes.
+- Centralized bilingual content.
+- Loading, empty, success, and error states.
+- Form validation.
+- Server-side operations for sensitive business logic.
+- Consistent date, time, currency, and status formatting.
+
+Do not put privileged credentials in frontend code. Do not hardcode secrets or invent API credentials.
+
+# 22. TESTING AND ACCEPTANCE CRITERIA
+
+Do not consider the application complete merely because the pages render.
+
+Test the following:
+
+## Public website
+- All routes render.
+- Navigation and language switching work.
+- Responsive layouts work on mobile and desktop.
+- Unknown routes show the custom 404 page.
+- No unintended dead links or inert buttons remain.
+
+## Authentication and security
+- Tenant registration and login work.
+- Password recovery follows the configured Supabase flow.
+- Unauthorized users cannot open protected routes.
+- Public users cannot self-assign privileged roles.
+- Tenants cannot read or modify another tenant's private records.
+- Staff permissions are enforced by backend/database policies.
+
+## Kost
+- Room data persists.
+- Filters work.
+- Booking availability is checked.
+- Conflicting confirmed bookings are prevented.
+- Owner approval updates the correct records.
+- Invoices are created without duplication.
+
+## Café
+- Menu data persists.
+- Cart totals are validated.
+- Invalid quantities and unavailable products are rejected.
+- Orders persist and authorized staff can update statuses.
+- Inventory is handled consistently.
+
+## Co-working
+- Reservations persist.
+- Availability and overlapping reservations are validated.
+- Authorized cancellation and status updates work.
+
+## Payments
+- Cash remains pending until authorized confirmation.
+- QRIS is not marked paid without trusted verification.
+- Duplicate payment events do not double-count transactions.
+- Amounts match the associated invoice or order.
+- Pending, failed, successful, expired, and refunded states are handled where supported.
+
+## Owner dashboard and reports
+- Metrics are derived from real records.
+- Pending payments are excluded from verified revenue.
+- Tenant information and financial records are protected.
+- Sensitive administrative actions are logged.
+
+Use automated tests where practical and perform realistic end-to-end tests. Do not fabricate test results or claim that external payment integrations are verified if credentials or provider access are unavailable.
+
+# 23. FINAL DELIVERY REPORT
+
+After implementation, provide a clear report containing:
+
+1. All pages and modules implemented.
+2. Database tables, relationships, and migrations created or modified.
+3. Authentication and role-permission configuration.
+4. RLS policies and important security controls.
+5. Features successfully tested.
+6. Features that remain incomplete or have known issues.
+7. External integrations that require merchant accounts, API credentials, environment secrets, or manual configuration.
+8. Exact steps required to finish any remaining configuration.
+9. Any demonstration data that must be replaced with real business data.
+
+Do not claim that an operation, payment integration, notification, or database workflow is functional unless it has been implemented and appropriately tested.
+
+## FINAL INSTRUCTION
+
+Build the complete KosfeeKu application described in this prompt, not just its visual shell. Implement all feasible modules, connect them to Supabase, preserve security, test end-to-end workflows, and clearly report any external setup still required.
+
+Start by inspecting the project and existing Supabase configuration, then proceed through implementation and verification without stopping after the initial design.
